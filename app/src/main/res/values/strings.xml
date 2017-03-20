@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">The Little World</string>
-
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="company">company</string>
+    <string name="items">items</string>
 </resources>
