@@ -1,5 +1,6 @@
 package com.thelittleworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,13 +27,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         onItemsButtonClick();
+        onAddEventButtonClick();
     }
 
     private void onItemsButtonClick() {
         final Button button = (Button) findViewById(R.id.items_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ListView actionsListView = (ListView) findViewById(R.id.actions_listView);
+                Intent intent = new Intent(MainActivity.this, ItemsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void onAddEventButtonClick() {
+        final Button button = (Button) findViewById(R.id.addEvent_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 list.add("Kocham Sylwie !!");
                 arrayAdapter.notifyDataSetChanged();
             }
