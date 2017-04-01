@@ -25,10 +25,11 @@
         android:id="@+id/items_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:text="items"
-        tools:text="@string/items" />
+        tools:text="@string/items"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/company_button"
+        android:layout_toEndOf="@+id/company_button" />
 
     <Button
         android:id="@+id/addEvent_button"
@@ -38,5 +39,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/items_button"
+        android:layout_toRightOf="@+id/items_button"
+        android:text="Button" />
 
 </RelativeLayout>
