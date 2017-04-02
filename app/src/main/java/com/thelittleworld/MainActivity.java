@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.thelittleworld.core.AppCore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("example", "Elo benc");
 
-                // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 String url = "http://www.google.com";
-
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
@@ -63,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("example", error.getMessage());
                     }
                 });
-// Add the request to the RequestQueue.
-                queue.add(stringRequest);
+                AppCore.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
             }
         });
 
