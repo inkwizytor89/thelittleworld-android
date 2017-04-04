@@ -17,6 +17,11 @@ import com.android.volley.toolbox.Volley;
 import java.io.File;
 
 public class AppCore {
+
+    final public static String APP_NAME = "The Little World";
+    final public static String SERVER_URL = "http://10.0.2.2:8080";
+    final public static String UPDATE_ITEMS = "/update_items";
+
     private static AppCore mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
