@@ -26,6 +26,7 @@ public class AppCore {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static Context mCtx;
+    private static DbHelper dbHelper;
 
     private AppCore(Context context) {
         mCtx = context;
@@ -51,6 +52,7 @@ public class AppCore {
     public static synchronized AppCore getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new AppCore(context);
+            dbHelper = new DbHelper(context);
         }
         return mInstance;
     }
@@ -85,6 +87,10 @@ public class AppCore {
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
+    }
+
+    public DbHelper getDbHelper() {
+        return dbHelper;
     }
 
     public ImageLoader getImageLoader() {

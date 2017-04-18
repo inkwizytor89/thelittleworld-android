@@ -1,6 +1,5 @@
 package com.thelittleworld;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,28 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.thelittleworld.core.AppCore;
 import com.thelittleworld.core.DbHelper;
 import com.thelittleworld.entity.Item;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static com.thelittleworld.core.AppCore.APP_NAME;
-import static com.thelittleworld.core.AppCore.SERVER_URL;
-import static com.thelittleworld.core.AppCore.UPDATE_ITEMS;
 
 public class ItemsActivity extends AppCompatActivity {
 
@@ -49,7 +34,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         dbHelper = new DbHelper(getApplicationContext());
         buildArrayAdapter();
-        callItemsRequest();
+        printItems();
         onItemsButtonClick();
         onRefreshButtonClick();
     }
@@ -61,57 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
         actionsListView.setAdapter(arrayAdapter);
     }
 
-    private void callItemsRequest() {
-//        JsonArrayRequest jsObjRequest = new JsonArrayRequest
-//                (Request.Method.GET, SERVER_URL + UPDATE_ITEMS, null, new Response.Listener<JSONArray>() {
-//
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        Log.i(APP_NAME, SERVER_URL + UPDATE_ITEMS + ": " + response.toString());
-//                        try {
-//                            printItems(response);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO Auto-generated method stub
-//                        Log.e("example", "Response: ");
-//                    }
-//                });
-
-        // Access the RequestQueue through your singleton class.
-        AppCore.getInstance(this.getApplicationContext()).addToRequestQueue(new JsonArrayRequest(
-                Request.Method.GET, SERVER_URL + UPDATE_ITEMS, null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.i(APP_NAME, SERVER_URL + UPDATE_ITEMS + ": " + response.toString());
-                        try {
-                            Gson gson = new GsonBuilder().create();
-                            Type type = new TypeToken<List<Item>>() {
-                            }.getType();
-                            printItems((List<Item>) gson.fromJson(response.toString(), type));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        Log.e("example", "Response: ");
-                    }
-        }));
-    }
-
-    private void printItems(List<Item> items) throws JSONException {
-        writeToDb(items);
-
+    private void printItems() {
         List<Item> allItems = getAllItems();
         list.clear();
         list.addAll(itemsToString(allItems));
@@ -128,20 +63,6 @@ public class ItemsActivity extends AppCompatActivity {
             result.add(type + "; " + name);
         }
         return result;
-    }
-
-    private void writeToDb(List<Item> items) {
-        SQLiteDatabase writeDb = dbHelper.getWritableDatabase();
-
-        for (Item item : items) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(Item.COLUMN_NAME, item.name);
-            contentValues.put(Item.COLUMN_DESCRIPTION, item.description);
-            contentValues.put(Item.COLUMN_TYPE, item.type);
-            contentValues.put(Item.COLUMN_WEIGHT, item.weight);
-            long newRowId = writeDb.insert(Item.TABLE_NAME, null, contentValues);
-        }
-        writeDb.close();
     }
 
     private List<Item> getAllItems() {
