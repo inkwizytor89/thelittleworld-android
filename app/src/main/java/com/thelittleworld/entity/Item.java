@@ -1,7 +1,13 @@
 package com.thelittleworld.entity;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
+@Entity
 public class Item {
 
+    @Id
     public Integer id;
 
     public String name;
@@ -30,4 +36,58 @@ public class Item {
 
     public static final String SQL_DELETE =
             "DROP TABLE IF EXISTS " + Item.TABLE_NAME;
+
+    @Generated(hash = 580897685)
+    public Item(Integer id, String name, String description, String type,
+                Double weight) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.weight = weight;
+    }
+
+    @Generated(hash = 1470900980)
+    public Item() {
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Double getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
 }

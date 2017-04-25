@@ -1,5 +1,6 @@
 package com.thelittleworld.core;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -16,11 +17,13 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.File;
 
-public class AppCore {
+public class AppCore extends Application {
 
     final public static String APP_NAME = "The Little World";
     final public static String SERVER_URL = "http://10.0.2.2:8080";
     final public static String UPDATE_ITEMS = "/update_items";
+
+    public static final boolean ENCRYPTED = true;
 
     private static AppCore mInstance;
     private RequestQueue mRequestQueue;
@@ -60,7 +63,7 @@ public class AppCore {
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
 
-            if (getCacheDir() != null) {
+            if (getCacheDirectory() != null) {
 
                 // Instantiate the cache
                 Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -81,7 +84,7 @@ public class AppCore {
         return mRequestQueue;
     }
 
-    private File getCacheDir() {
+    private File getCacheDirectory() {
         return null;
     }
 
