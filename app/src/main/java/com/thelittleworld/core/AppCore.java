@@ -23,8 +23,7 @@ import java.io.File;
 public class AppCore extends Application {
 
     final public static String APP_NAME = "The Little World";
-    final public static String SERVER_URL = "http://10.0.2.2:8080";
-
+    public static final String DATABASE_NAME = "thelittleworld.db";
     public static final boolean ENCRYPTED = false;
 
     private static AppCore instance;
@@ -39,7 +38,7 @@ public class AppCore extends Application {
         super.onCreate();
         instance = this;
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "notes-db-encrypted" : DbHelper.DATABASE_NAME);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "notes-db-encrypted" : DATABASE_NAME);
         Database db = ENCRYPTED ? helper.getEncryptedWritableDb("super-secret") : helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 

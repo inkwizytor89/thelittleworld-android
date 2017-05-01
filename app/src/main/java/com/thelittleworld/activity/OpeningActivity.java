@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import com.thelittleworld.R;
+import com.thelittleworld.core.AppCore;
 import com.thelittleworld.update.ItemsUpdater;
+import com.thelittleworld.update.UserDataUpdateRequest;
 
 public class OpeningActivity extends AppCompatActivity {
 
@@ -19,6 +21,10 @@ public class OpeningActivity extends AppCompatActivity {
         progressBar.setMax(1);
 
         new ItemsUpdater();
+
+//        new UserDataUpdater();
+        AppCore.getApplication().addToRequestQueue(new UserDataUpdateRequest());
+
 
         Intent intent = new Intent(OpeningActivity.this, MainActivity.class);
         startActivity(intent);

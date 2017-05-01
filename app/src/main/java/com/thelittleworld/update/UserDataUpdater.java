@@ -5,42 +5,44 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.thelittleworld.entity.Item;
-import com.thelittleworld.entity.ItemDao;
+import com.thelittleworld.entity.User;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import static com.thelittleworld.core.AppCore.APP_NAME;
 
-// TODO: 01.05.2017 change to request class like UserDataUpdateRequest
-public class ItemsUpdater extends AbstractUpdater {
+// TODO: remove
+public class UserDataUpdater extends AbstractUpdater {
 
     @Override
     protected String getURL() {
-        return UPDATE_ITEMS;
+        return UPDATE_USER_DATA + "?user_id=1";
     }
 
     @Override
     protected JsonRequest createRequest() {
-        return new JsonArrayRequest(
-                Request.Method.GET, getURL(), null, new Response.Listener<JSONArray>() {
+        return new JsonObjectRequest(
+                Request.Method.GET, getURL(), null, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 Log.i(APP_NAME, getURL() + ": " + response.toString());
                 Gson gson = new GsonBuilder().create();
-                Type type = new TypeToken<List<Item>>() {
+                Type type = new TypeToken<User>() {
                 }.getType();
-                writeItems(gson.<List<Item>>fromJson(response.toString(), type));
+                writeUser(gson.<User>fromJson(response.toString(), type));
             }
+
+            private void writeUser(User user) {
+            }
+
         }, new Response.ErrorListener() {
 
             @Override
@@ -49,14 +51,4 @@ public class ItemsUpdater extends AbstractUpdater {
             }
         });
     }
-
-    private void writeItems(List<Item> items) {
-        ItemDao itemDao = getDaoSession().getItemDao();
-        itemDao.deleteAll();
-
-        for (Item item : items) {
-            itemDao.insert(item);
-        }
-    }
-
 }
