@@ -3,12 +3,16 @@ package com.thelittleworld.entity;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
 
-@Entity
+@Entity(
+        nameInDb = "items"
+)
 public class Item {
 
     @Id
-    public Integer id;
+    @Property(nameInDb = "id")
+    public Long id;
 
     public String name;
 
@@ -37,8 +41,8 @@ public class Item {
     public static final String SQL_DELETE =
             "DROP TABLE IF EXISTS " + Item.TABLE_NAME;
 
-    @Generated(hash = 580897685)
-    public Item(Integer id, String name, String description, String type,
+    @Generated(hash = 1201866111)
+    public Item(Long id, String name, String description, String type,
                 Double weight) {
         this.id = id;
         this.name = name;
@@ -51,11 +55,11 @@ public class Item {
     public Item() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

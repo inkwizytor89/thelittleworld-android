@@ -28,35 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         onItemsButtonClick();
         onAddEventButtonClick();
-
-
-//        final Button button = (Button) findViewById(R.id.button);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//
-//                Log.e("example", "Elo benc");
-//
-//                String url = "http://www.google.com";
-//                // Request a string response from the provided URL.
-//                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                // Display the first 500 characters of the response string.
-//                                Log.e("example", "Response is: " + response.substring(0, 500));
-//                                klik();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("example", error.getMessage());
-//                    }
-//                });
-//                AppCore.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-//            }
-//        });
-
-
     }
 
     private void onItemsButtonClick() {

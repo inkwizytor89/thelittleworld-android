@@ -82,7 +82,7 @@ public class ItemsActivity extends AppCompatActivity {
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             Item item = new Item();
-            item.id = cursor.getInt(cursor.getColumnIndexOrThrow(Item.COLUMN_ID));
+            item.id = cursor.getLong(cursor.getColumnIndexOrThrow(Item.COLUMN_ID));
             item.name = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_NAME));
             item.description = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_DESCRIPTION));
             item.type = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_TYPE));

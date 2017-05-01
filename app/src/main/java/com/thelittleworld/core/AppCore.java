@@ -1,7 +1,6 @@
 package com.thelittleworld.core;
 
 import android.app.Application;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
@@ -14,6 +13,10 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.thelittleworld.entity.DaoMaster;
+import com.thelittleworld.entity.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
 
 import java.io.File;
 
@@ -21,20 +24,26 @@ public class AppCore extends Application {
 
     final public static String APP_NAME = "The Little World";
     final public static String SERVER_URL = "http://10.0.2.2:8080";
-    final public static String UPDATE_ITEMS = "/update_items";
 
-    public static final boolean ENCRYPTED = true;
+    public static final boolean ENCRYPTED = false;
 
-    private static AppCore mInstance;
+    private static AppCore instance;
+
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static Context mCtx;
-    private static DbHelper dbHelper;
 
-    private AppCore(Context context) {
-        mCtx = context;
-        mRequestQueue = getRequestQueue();
+    private DaoSession daoSession;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "notes-db-encrypted" : DbHelper.DATABASE_NAME);
+        Database db = ENCRYPTED ? helper.getEncryptedWritableDb("super-secret") : helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
+
+        createRequestQueue();
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
@@ -52,35 +61,27 @@ public class AppCore extends Application {
                 });
     }
 
-    public static synchronized AppCore getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = new AppCore(context);
-            dbHelper = new DbHelper(context);
+    private void createRequestQueue() {
+        if (getCacheDirectory() != null) {
+
+            // Instantiate the cache
+            Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+            // Set up the network to use HttpURLConnection as the HTTP client.
+            Network network = new BasicNetwork(new HurlStack());
+
+            // Instantiate the RequestQueue with the cache and network.
+            mRequestQueue = new RequestQueue(cache, network);
+
+            // Start the queue
+            mRequestQueue.start();
         }
-        return mInstance;
+        // getApplicationContext() is key, it keeps you from leaking the
+        // Activity or BroadcastReceiver if someone passes one in.
+        mRequestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
     public RequestQueue getRequestQueue() {
-        if (mRequestQueue == null) {
-
-            if (getCacheDirectory() != null) {
-
-                // Instantiate the cache
-                Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-                // Set up the network to use HttpURLConnection as the HTTP client.
-                Network network = new BasicNetwork(new HurlStack());
-
-                // Instantiate the RequestQueue with the cache and network.
-                mRequestQueue = new RequestQueue(cache, network);
-
-                // Start the queue
-                mRequestQueue.start();
-            }
-            // getApplicationContext() is key, it keeps you from leaking the
-            // Activity or BroadcastReceiver if someone passes one in.
-            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
-        }
         return mRequestQueue;
     }
 
@@ -92,11 +93,15 @@ public class AppCore extends Application {
         getRequestQueue().add(req);
     }
 
-    public DbHelper getDbHelper() {
-        return dbHelper;
-    }
-
     public ImageLoader getImageLoader() {
         return mImageLoader;
+    }
+
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
+
+    public static AppCore getApplication() {
+        return instance;
     }
 }
