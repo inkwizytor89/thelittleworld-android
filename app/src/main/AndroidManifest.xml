@@ -26,8 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.OpeningActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ItemsActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.ItemsActivity" />
     </application>
 
 </manifest>

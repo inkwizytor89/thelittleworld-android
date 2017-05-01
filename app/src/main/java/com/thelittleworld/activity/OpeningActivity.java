@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
-import com.thelittleworld.MainActivity;
 import com.thelittleworld.R;
 import com.thelittleworld.update.ItemsUpdater;
 

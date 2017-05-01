@@ -1,4 +1,4 @@
-package com.thelittleworld;
+package com.thelittleworld.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.thelittleworld.R;
 
 import java.util.ArrayList;
 import java.util.List;

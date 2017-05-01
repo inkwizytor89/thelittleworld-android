@@ -1,8 +1,6 @@
-package com.thelittleworld;
+package com.thelittleworld.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.thelittleworld.R;
+import com.thelittleworld.core.AppCore;
 import com.thelittleworld.core.DbHelper;
 import com.thelittleworld.entity.Item;
+import com.thelittleworld.entity.ItemDao;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,32 +67,8 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     private List<Item> getAllItems() {
-
-        SQLiteDatabase readDb = dbHelper.getReadableDatabase();
-        String[] projection = {
-                Item.COLUMN_ID,
-                Item.COLUMN_NAME,
-                Item.COLUMN_DESCRIPTION,
-                Item.COLUMN_TYPE,
-                Item.COLUMN_WEIGHT
-        };
-
-        Cursor cursor = readDb.rawQuery("select * from " + Item.TABLE_NAME, null);
-
-        List<Item> itemList = new ArrayList<Item>();
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            Item item = new Item();
-            item.id = cursor.getLong(cursor.getColumnIndexOrThrow(Item.COLUMN_ID));
-            item.name = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_NAME));
-            item.description = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_DESCRIPTION));
-            item.type = cursor.getString(cursor.getColumnIndexOrThrow(Item.COLUMN_TYPE));
-            item.weight = cursor.getDouble(cursor.getColumnIndexOrThrow(Item.COLUMN_WEIGHT));
-            itemList.add(item);
-        }
-        cursor.close();
-        readDb.close();
-        return itemList;
+        final ItemDao itemDao = AppCore.getApplication().getDaoSession().getItemDao();
+        return itemDao.loadAll();
     }
 
     private void onItemsButtonClick() {
