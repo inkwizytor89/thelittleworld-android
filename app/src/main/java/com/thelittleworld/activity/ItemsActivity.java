@@ -11,7 +11,6 @@ import android.widget.ListView;
 
 import com.thelittleworld.R;
 import com.thelittleworld.core.AppCore;
-import com.thelittleworld.core.DbHelper;
 import com.thelittleworld.entity.Item;
 import com.thelittleworld.entity.ItemDao;
 
@@ -23,17 +22,15 @@ import static com.thelittleworld.core.AppCore.APP_NAME;
 
 public class ItemsActivity extends AppCompatActivity {
 
-    public List<String> list = new ArrayList<String>();
+    public List<String> list = new ArrayList<>();
     public ArrayAdapter<String> arrayAdapter;
     public Integer counter = 0;
-    private DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
 
-        dbHelper = new DbHelper(getApplicationContext());
         buildArrayAdapter();
         printItems();
         onItemsButtonClick();
@@ -41,7 +38,7 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     private void buildArrayAdapter() {
-        arrayAdapter = new ArrayAdapter<String>
+        arrayAdapter = new ArrayAdapter<>
                 (this, android.R.layout.simple_list_item_1, list);
         ListView actionsListView = (ListView) findViewById(R.id.items_listView);
         actionsListView.setAdapter(arrayAdapter);
@@ -55,10 +52,9 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     private Collection<? extends String> itemsToString(List<Item> items) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (Item item : items) {
             String name = item.name;
-            String description = item.description;
             String type = item.type;
             String weight = item.weight.toString();
             result.add(type + "; " + name);
