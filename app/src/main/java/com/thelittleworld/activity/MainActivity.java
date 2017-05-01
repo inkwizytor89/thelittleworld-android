@@ -28,9 +28,19 @@ public class MainActivity extends AppCompatActivity {
         actionsListView.setAdapter(arrayAdapter);
 
 
-        onItemsButtonClick();
+        onCompanyButtonClick();
         onItemsButtonClick();
         onAddEventButtonClick();
+    }
+
+    private void onCompanyButtonClick() {
+        final Button button = (Button) findViewById(R.id.company_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CompanyActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void onItemsButtonClick() {

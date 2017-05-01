@@ -51,20 +51,19 @@ public class ItemsActivity extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
     }
 
+    private List<Item> getAllItems() {
+        final ItemDao itemDao = AppCore.getApplication().getDaoSession().getItemDao();
+        return itemDao.loadAll();
+    }
+
     private Collection<? extends String> itemsToString(List<Item> items) {
         List<String> result = new ArrayList<>();
         for (Item item : items) {
             String name = item.name;
             String type = item.type;
-            String weight = item.weight.toString();
-            result.add(type + "; " + name);
+            result.add(type + ": " + name);
         }
         return result;
-    }
-
-    private List<Item> getAllItems() {
-        final ItemDao itemDao = AppCore.getApplication().getDaoSession().getItemDao();
-        return itemDao.loadAll();
     }
 
     private void onItemsButtonClick() {

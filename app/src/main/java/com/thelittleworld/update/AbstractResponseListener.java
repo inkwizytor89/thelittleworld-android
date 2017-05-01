@@ -11,6 +11,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.thelittleworld.entity.DaoSession;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -30,14 +32,29 @@ abstract class AbstractResponseListener implements Response.Listener<JSONObject>
     @Override
     public void onResponse(JSONObject response) {
         Log.i(APP_NAME, getURL() + ": " + response.toString());
-        execute(response);
+        try {
+            execute(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract String getURL();
 
-    protected abstract void execute(JSONObject response);
+    protected abstract void execute(JSONObject response) throws JSONException;
 
     <T> T convertTo(JSONObject response, Class<T> classOfT) {
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        return new Date(json.getAsJsonPrimitive().getAsLong());
+                    }
+                }).create();
+        return gson.fromJson(response.toString(), classOfT);
+    }
+
+    <T> T convertTo(JSONArray response, Class<T> classOfT) {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {

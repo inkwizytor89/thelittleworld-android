@@ -7,7 +7,7 @@ import android.widget.ProgressBar;
 
 import com.thelittleworld.R;
 import com.thelittleworld.core.AppCore;
-import com.thelittleworld.update.ItemsUpdater;
+import com.thelittleworld.update.ItemsUpdateRequest;
 import com.thelittleworld.update.UserDataUpdateRequest;
 
 public class OpeningActivity extends AppCompatActivity {
@@ -20,9 +20,7 @@ public class OpeningActivity extends AppCompatActivity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setMax(1);
 
-        new ItemsUpdater();
-
-//        new UserDataUpdater();
+        AppCore.getApplication().addToRequestQueue(new ItemsUpdateRequest());
         AppCore.getApplication().addToRequestQueue(new UserDataUpdateRequest());
 
 
